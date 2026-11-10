@@ -1,0 +1,187 @@
+{
+  "version": "1.0",
+  "title": "Fragebogen: Benutzeroberfläche des DICOM-Viewers",
+  "intro": "Vielen Dank für Ihre Teilnahme! Die Umfrage dauert ca. 5 Minuten. Ihre Angaben sind anonym und werden nur zur Verbesserung der Benutzeroberfläche verwendet. Pflichtfragen sind mit * markiert.",
+  "submit": {
+    "endpoint": "https://api.web3forms.com/submit",
+    "accessKey": "abbf96ba-dee1-4d1c-9c0b-31bcbdbebf56",
+    "subject": "Neue Antwort: Fragebogen DICOM-Viewer",
+    "email": ""
+  },
+  "sections": [
+    {
+      "id": "profil",
+      "title": "1. Zu Ihrer Person",
+      "questions": [
+        {
+          "id": "rolle",
+          "type": "single",
+          "text": "Was ist Ihre berufliche Rolle?",
+          "required": true,
+          "options": ["Radiologe/Radiologin", "MTRA / Radiologieassistent/in", "Facharzt/Fachärztin (andere Disziplin)", "Medizinphysiker/in", "Student/in / Forschung", "IT / PACS-Administration", "Sonstiges"]
+        },
+        {
+          "id": "erfahrung",
+          "type": "single",
+          "text": "Wie lange arbeiten Sie bereits mit DICOM-Viewern?",
+          "required": true,
+          "options": ["Weniger als 1 Jahr", "1–3 Jahre", "4–10 Jahre", "Mehr als 10 Jahre"]
+        },
+        {
+          "id": "haeufigkeit",
+          "type": "single",
+          "text": "Wie oft nutzen Sie einen DICOM-Viewer?",
+          "required": true,
+          "options": ["Täglich", "Mehrmals pro Woche", "Gelegentlich", "Selten"]
+        },
+        {
+          "id": "modalitaeten",
+          "type": "multi",
+          "text": "Mit welchen Modalitäten arbeiten Sie hauptsächlich?",
+          "options": ["CT", "MRT", "Röntgen (CR/DX)", "Ultraschall", "Mammographie", "Nuklearmedizin (PET/SPECT)", "Sonstige"]
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "2. Layout und Navigation",
+      "questions": [
+        {
+          "id": "uebersichtlichkeit",
+          "type": "scale",
+          "text": "Die Benutzeroberfläche ist insgesamt übersichtlich.",
+          "required": true,
+          "min": 1, "max": 5,
+          "minLabel": "Stimme gar nicht zu",
+          "maxLabel": "Stimme voll zu"
+        },
+        {
+          "id": "navigation",
+          "type": "scale",
+          "text": "Ich finde mich beim Wechsel zwischen Studien, Serien und Bildern schnell zurecht.",
+          "required": true,
+          "min": 1, "max": 5,
+          "minLabel": "Stimme gar nicht zu",
+          "maxLabel": "Stimme voll zu"
+        },
+        {
+          "id": "layout_anpassung",
+          "type": "scale",
+          "text": "Das Layout (z. B. Mehrfachansicht, Vergleich mit Voruntersuchungen) lässt sich flexibel anpassen.",
+          "min": 1, "max": 5,
+          "minLabel": "Stimme gar nicht zu",
+          "maxLabel": "Stimme voll zu"
+        },
+        {
+          "id": "layout_probleme",
+          "type": "text",
+          "text": "Was stört Sie am aktuellen Layout am meisten?"
+        }
+      ]
+    },
+    {
+      "id": "werkzeuge",
+      "title": "3. Werkzeuge und Bedienung",
+      "questions": [
+        {
+          "id": "wichtige_tools",
+          "type": "multi",
+          "text": "Welche Werkzeuge nutzen Sie am häufigsten?",
+          "required": true,
+          "options": ["Zoom / Pan", "Fensterung (Window/Level)", "Scrollen durch Serien", "Messwerkzeuge (Länge, Winkel, ROI)", "MPR / 3D-Rekonstruktion", "Annotationen / Markierungen", "Cine-Modus", "Bildinversion / Presets"]
+        },
+        {
+          "id": "toolbar",
+          "type": "scale",
+          "text": "Die Werkzeugleiste ist leicht verständlich und gut erreichbar.",
+          "required": true,
+          "min": 1, "max": 5,
+          "minLabel": "Stimme gar nicht zu",
+          "maxLabel": "Stimme voll zu"
+        },
+        {
+          "id": "shortcuts",
+          "type": "single",
+          "text": "Wie wichtig sind Ihnen Tastenkürzel und Mausgesten?",
+          "options": ["Sehr wichtig", "Eher wichtig", "Weniger wichtig", "Unwichtig"]
+        },
+        {
+          "id": "messen",
+          "type": "scale",
+          "text": "Messungen und Annotationen lassen sich einfach und präzise durchführen.",
+          "min": 1, "max": 5,
+          "minLabel": "Stimme gar nicht zu",
+          "maxLabel": "Stimme voll zu"
+        }
+      ]
+    },
+    {
+      "id": "darstellung",
+      "title": "4. Darstellung und Leistung",
+      "questions": [
+        {
+          "id": "theme",
+          "type": "single",
+          "text": "Welches Farbschema bevorzugen Sie?",
+          "options": ["Dunkel", "Hell", "Automatisch (Systemeinstellung)", "Egal"]
+        },
+        {
+          "id": "lesbarkeit",
+          "type": "scale",
+          "text": "Texte, Symbole und Bildeinblendungen (z. B. Patientendaten) sind gut lesbar.",
+          "min": 1, "max": 5,
+          "minLabel": "Stimme gar nicht zu",
+          "maxLabel": "Stimme voll zu"
+        },
+        {
+          "id": "ladezeit",
+          "type": "scale",
+          "text": "Ladezeiten und Reaktionsgeschwindigkeit sind für meine Arbeit ausreichend.",
+          "required": true,
+          "min": 1, "max": 5,
+          "minLabel": "Stimme gar nicht zu",
+          "maxLabel": "Stimme voll zu"
+        },
+        {
+          "id": "geraete",
+          "type": "multi",
+          "text": "Auf welchen Geräten nutzen Sie den Viewer?",
+          "options": ["Befundungsmonitor", "Standard-Desktop / Laptop", "Tablet", "Smartphone"]
+        }
+      ]
+    },
+    {
+      "id": "gesamt",
+      "title": "5. Gesamteindruck",
+      "questions": [
+        {
+          "id": "gesamtzufriedenheit",
+          "type": "scale",
+          "text": "Wie zufrieden sind Sie insgesamt mit der Benutzeroberfläche?",
+          "required": true,
+          "min": 1, "max": 5,
+          "minLabel": "Sehr unzufrieden",
+          "maxLabel": "Sehr zufrieden"
+        },
+        {
+          "id": "weiterempfehlung",
+          "type": "scale",
+          "text": "Wie wahrscheinlich ist es, dass Sie den Viewer Kolleginnen und Kollegen empfehlen?",
+          "min": 0, "max": 10,
+          "minLabel": "Sehr unwahrscheinlich",
+          "maxLabel": "Sehr wahrscheinlich"
+        },
+        {
+          "id": "wunschfunktion",
+          "type": "text",
+          "text": "Welche Funktion oder Verbesserung wünschen Sie sich am meisten?"
+        },
+        {
+          "id": "sonstiges",
+          "type": "text",
+          "text": "Weitere Anmerkungen (optional)"
+        }
+      ]
+    }
+  ]
+}

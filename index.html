@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fragebogen: DICOM-Viewer</title>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--text:#1d2733;--muted:#5d6b7a;--line:#d9e0e8;--accent:#1f6feb;--accent-t:#fff;--err:#c62828}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1419;--card:#18202a;--text:#e6edf3;--muted:#93a1b0;--line:#2b3744;--accent:#4c9aff;--accent-t:#06121f;--err:#ff7b72}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.6rem;margin:0 0 8px}
+h2{font-size:1.15rem;margin:0 0 16px;color:var(--accent)}
+.intro{color:var(--muted);margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:20px}
+fieldset{border:0;padding:0;margin:0 0 22px}
+legend{font-weight:600;padding:0;margin-bottom:8px}
+.req{color:var(--err)}
+.q.error legend{color:var(--err)}
+.q.error::after{content:"Bitte beantworten Sie diese Frage.";color:var(--err);font-size:.85rem}
+.opt{display:flex;gap:8px;align-items:flex-start;padding:4px 0;cursor:pointer}
+.opt input{margin-top:5px}
+.scale{display:flex;gap:6px;flex-wrap:wrap}
+.scale label{flex:1 0 44px;text-align:center;border:1px solid var(--line);border-radius:8px;padding:8px 0;cursor:pointer}
+.scale input{position:absolute;opacity:0}
+.scale label:has(input:checked){background:var(--accent);color:var(--accent-t);border-color:var(--accent)}
+.scale label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+.ends{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;margin-top:4px}
+textarea{width:100%;min-height:90px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit;resize:vertical}
+button{background:var(--accent);color:var(--accent-t);border:0;border-radius:8px;padding:10px 18px;font:inherit;font-weight:600;cursor:pointer;margin:4px 8px 4px 0}
+button.sec{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+pre{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;max-height:260px;font-size:.8rem}
+#done{display:none}
+.msg{color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title">Fragebogen</h1>
+  <p class="intro" id="intro">Wird geladen …</p>
+  <form id="form" novalidate></form>
+
+  <section id="done" class="card">
+    <h2>Vielen Dank für Ihre Teilnahme!</h2>
+    <p class="msg" id="status"></p>
+    <button id="dl" type="button">Antworten als JSON herunterladen</button>
+    <button id="cp" type="button" class="sec">Kopieren</button>
+    <button id="mail" type="button" class="sec" hidden>Per E-Mail senden</button>
+    <pre id="out"></pre>
+  </section>
+</main>
+
+<script>
+(async function () {
+  const $ = id => document.getElementById(id);
+  const form = $("form");
+  let cfg;
+
+  try {
+    const r = await fetch("fragebogen.json", { cache: "no-cache" });
+    if (!r.ok) throw new Error(r.status);
+    cfg = await r.json();
+  } catch (e) {
+    $("intro").textContent = "Der Fragebogen konnte nicht geladen werden. Bitte über einen Webserver (z. B. GitHub Pages) öffnen.";
+    return;
+  }
+
+  document.title = cfg.title;
+  $("title").textContent = cfg.title;
+  $("intro").textContent = cfg.intro || "";
+
+  const el = (tag, cls, text) => {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  };
+
+  function renderQuestion(q) {
+    const fs = el("fieldset", "q");
+    fs.dataset.id = q.id;
+    const lg = el("legend", null, q.text + " ");
+    if (q.required) lg.appendChild(el("span", "req", "*"));
+    fs.appendChild(lg);
+
+    if (q.type === "single" || q.type === "multi") {
+      const t = q.type === "single" ? "radio" : "checkbox";
+      q.options.forEach(o => {
+        const l = el("label", "opt");
+        const i = el("input");
+        i.type = t; i.name = q.id; i.value = o;
+        l.append(i, el("span", null, o));
+        fs.appendChild(l);
+      });
+    } else if (q.type === "scale") {
+      const w = el("div", "scale");
+      for (let v = q.min; v <= q.max; v++) {
+        const l = el("label");
+        const i = el("input");
+        i.type = "radio"; i.name = q.id; i.value = v;
+        l.append(i, document.createTextNode(v));
+        w.appendChild(l);
+      }
+      fs.appendChild(w);
+      const e = el("div", "ends");
+      e.append(el("span", null, q.minLabel || ""), el("span", null, q.maxLabel || ""));
+      fs.appendChild(e);
+    } else if (q.type === "text") {
+      const t = el("textarea");
+      t.name = q.id;
+      fs.appendChild(t);
+    }
+    return fs;
+  }
+
+  cfg.sections.forEach(s => {
+    const card = el("div", "card");
+    card.appendChild(el("h2", null, s.title));
+    s.questions.forEach(q => card.appendChild(renderQuestion(q)));
+    form.appendChild(card);
+  });
+
+  const submit = el("button", null, "Absenden");
+  submit.type = "submit";
+  form.appendChild(submit);
+
+  const allQ = cfg.sections.flatMap(s => s.questions);
+
+  function collect() {
+    const a = {};
+    allQ.forEach(q => {
+      if (q.type === "multi") {
+        a[q.id] = [...form.querySelectorAll(`input[name="${q.id}"]:checked`)].map(i => i.value);
+      } else if (q.type === "single") {
+        const c = form.querySelector(`input[name="${q.id}"]:checked`);
+        a[q.id] = c ? c.value : null;
+      } else if (q.type === "scale") {
+        const c = form.querySelector(`input[name="${q.id}"]:checked`);
+        a[q.id] = c ? Number(c.value) : null;
+      } else {
+        a[q.id] = form.querySelector(`textarea[name="${q.id}"]`).value.trim();
+      }
+    });
+    return a;
+  }
+
+  const isEmpty = v => v == null || v === "" || (Array.isArray(v) && !v.length);
+
+  form.addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const answers = collect();
+    let first = null;
+    allQ.forEach(q => {
+      const node = form.querySelector(`.q[data-id="${q.id}"]`);
+      const bad = q.required && isEmpty(answers[q.id]);
+      node.classList.toggle("error", bad);
+      if (bad && !first) first = node;
+    });
+    if (first) { first.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+
+    const result = { formVersion: cfg.version, submittedAt: new Date().toISOString(), answers };
+    const json = JSON.stringify(result, null, 2);
+    form.style.display = "none";
+    $("done").style.display = "block";
+    $("out").textContent = json;
+    window.scrollTo({ top: 0 });
+
+    const sub = cfg.submit || {};
+    let status = "Ihre Antworten wurden lokal erstellt. Bitte laden Sie die Datei herunter und senden Sie sie an die Studienleitung.";
+
+    if (sub.endpoint) {
+      $("status").textContent = "Antworten werden gesendet …";
+      const subject = sub.subject || "Fragebogen DICOM-Viewer";
+      const payload = { subject: subject, _subject: subject };
+      if (sub.accessKey) payload.access_key = sub.accessKey;
+      allQ.forEach(q => {
+        const v = answers[q.id];
+        payload[q.text] = Array.isArray(v) ? v.join(", ") : (v == null || v === "" ? "–" : String(v));
+      });
+      payload["Rohdaten (JSON)"] = json;
+      try {
+        const r = await fetch(sub.endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        status = r.ok
+          ? "Ihre Antworten wurden erfolgreich übermittelt."
+          : "Die Übermittlung ist fehlgeschlagen. Bitte laden Sie die Datei herunter.";
+      } catch (e) {
+        status = "Die Übermittlung ist fehlgeschlagen. Bitte laden Sie die Datei herunter.";
+      }
+    }
+    $("status").textContent = status;
+
+    $("dl").onclick = () => {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([json], { type: "application/json" }));
+      a.download = "antworten-" + Date.now() + ".json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    };
+    $("cp").onclick = async () => {
+      try { await navigator.clipboard.writeText(json); $("cp").textContent = "Kopiert ✓"; }
+      catch (e) { $("cp").textContent = "Kopieren nicht möglich"; }
+    };
+    if (sub.email) {
+      $("mail").hidden = false;
+      $("mail").onclick = () => {
+        location.href = "mailto:" + encodeURIComponent(sub.email) +
+          "?subject=" + encodeURIComponent("Fragebogen DICOM-Viewer") +
+          "&body=" + encodeURIComponent(json);
+      };
+    }
+  });
+})();
+</script>
+</body>
+</html>
