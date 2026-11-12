@@ -15,30 +15,15 @@
       "questions": [
         {
           "id": "rolle",
-          "type": "single",
-          "text": "Was ist Ihre berufliche Rolle?",
-          "required": true,
-          "options": ["Radiologe/Radiologin", "MTRA / Radiologieassistent/in", "Facharzt/Fachärztin (andere Disziplin)", "Medizinphysiker/in", "Student/in / Forschung", "IT / PACS-Administration", "Sonstiges"]
+          "type": "text",
+          "text": "Was ist Ihre berufliche Rolle?"
         },
         {
           "id": "erfahrung",
           "type": "single",
-          "text": "Wie lange arbeiten Sie bereits mit DICOM-Viewern?",
+          "text": "Haben Sie bereits mit DICOM/DICOM-Viewern gearbeitet?",
           "required": true,
-          "options": ["Weniger als 1 Jahr", "1–3 Jahre", "4–10 Jahre", "Mehr als 10 Jahre"]
-        },
-        {
-          "id": "haeufigkeit",
-          "type": "single",
-          "text": "Wie oft nutzen Sie einen DICOM-Viewer?",
-          "required": true,
-          "options": ["Täglich", "Mehrmals pro Woche", "Gelegentlich", "Selten"]
-        },
-        {
-          "id": "modalitaeten",
-          "type": "multi",
-          "text": "Mit welchen Modalitäten arbeiten Sie hauptsächlich?",
-          "options": ["CT", "MRT", "Röntgen (CR/DX)", "Ultraschall", "Mammographie", "Nuklearmedizin (PET/SPECT)", "Sonstige"]
+          "options": ["Ja", "Nein"]
         }
       ]
     },
@@ -56,26 +41,15 @@
           "maxLabel": "Stimme voll zu"
         },
         {
-          "id": "navigation",
-          "type": "scale",
-          "text": "Ich finde mich beim Wechsel zwischen Studien, Serien und Bildern schnell zurecht.",
-          "required": true,
-          "min": 1, "max": 5,
-          "minLabel": "Stimme gar nicht zu",
-          "maxLabel": "Stimme voll zu"
-        },
-        {
           "id": "layout_anpassung",
-          "type": "scale",
-          "text": "Das Layout (z. B. Mehrfachansicht, Vergleich mit Voruntersuchungen) lässt sich flexibel anpassen.",
-          "min": 1, "max": 5,
-          "minLabel": "Stimme gar nicht zu",
-          "maxLabel": "Stimme voll zu"
+          "type": "single",
+          "text": "Möchten Sie die Benutzeroberfläche individuell anpassen können?",
+          "options": ["Ja", "Nein"]
         },
         {
           "id": "layout_probleme",
           "type": "text",
-          "text": "Was stört Sie am aktuellen Layout am meisten?"
+          "text": "Wie viel Zeit wären Sie bereit, in das Erlernen der neuen Anwendung zu investieren?"
         }
       ]
     },
@@ -84,34 +58,33 @@
       "title": "3. Werkzeuge und Bedienung",
       "questions": [
         {
-          "id": "wichtige_tools",
-          "type": "multi",
-          "text": "Welche Werkzeuge nutzen Sie am häufigsten?",
-          "required": true,
-          "options": ["Zoom / Pan", "Fensterung (Window/Level)", "Scrollen durch Serien", "Messwerkzeuge (Länge, Winkel, ROI)", "MPR / 3D-Rekonstruktion", "Annotationen / Markierungen", "Cine-Modus", "Bildinversion / Presets"]
-        },
-        {
-          "id": "toolbar",
-          "type": "scale",
-          "text": "Die Werkzeugleiste ist leicht verständlich und gut erreichbar.",
-          "required": true,
-          "min": 1, "max": 5,
-          "minLabel": "Stimme gar nicht zu",
-          "maxLabel": "Stimme voll zu"
-        },
-        {
-          "id": "shortcuts",
+          "id": "stuerung",
           "type": "single",
           "text": "Wie wichtig sind Ihnen Tastenkürzel und Mausgesten?",
           "options": ["Sehr wichtig", "Eher wichtig", "Weniger wichtig", "Unwichtig"]
         },
         {
-          "id": "messen",
-          "type": "scale",
-          "text": "Messungen und Annotationen lassen sich einfach und präzise durchführen.",
-          "min": 1, "max": 5,
-          "minLabel": "Stimme gar nicht zu",
-          "maxLabel": "Stimme voll zu"
+          "id": "betriebssysteme_browser",
+          "type": "text",
+          "text": "Welche Betriebssysteme oder Browser verwenden Sie?"
+        },
+        {
+          "id": "erinnerungen",
+          "type": "single",
+          "text": "Soll die Anwendung Benachrichtigungen oder Erinnerungen anzeigen?",
+          "options": ["Ja", "Nein"]
+        },
+        {
+          "id": "falsche_eingabe",
+          "type": "multi",
+          "text": "Wie sollte die Anwendung auf falsche Eingaben reagieren?",
+          "options": ["Fehlermeldung anzeigen", "Fehlerhafte Eingaben farblich markieren", "Hinweise zur Fehlerbehebung anzeigen", "Bestätigung vor dem Absenden verlangen"]
+        },
+        {
+          "id": "wichtige_functionen",
+          "type": "multi",
+          "text": "Welche Funktionen würden Ihnen den Arbeitsalltag erleichtern?",
+          "options": ["Automatische Datenspeicherung", "Tastenkombinationen (Shortcuts)", "Vorlagen für wiederkehrende Aufgaben", "Automatische Erinnerungen", "Suchverlauf", "Personalisierte Einstellungen"]
         }
       ]
     },
@@ -128,7 +101,7 @@
         {
           "id": "lesbarkeit",
           "type": "scale",
-          "text": "Texte, Symbole und Bildeinblendungen (z. B. Patientendaten) sind gut lesbar.",
+          "text": "Texte, Symbole und Bildeinblendungen (z. B. Patientendaten) mussen gut lesbar sein.",
           "min": 1, "max": 5,
           "minLabel": "Stimme gar nicht zu",
           "maxLabel": "Stimme voll zu"
@@ -136,17 +109,17 @@
         {
           "id": "ladezeit",
           "type": "scale",
-          "text": "Ladezeiten und Reaktionsgeschwindigkeit sind für meine Arbeit ausreichend.",
+          "text": "Ladezeiten und Reaktionsgeschwindigkeit sind für meine Arbeit wichtig.",
           "required": true,
           "min": 1, "max": 5,
           "minLabel": "Stimme gar nicht zu",
           "maxLabel": "Stimme voll zu"
         },
         {
-          "id": "geraete",
+          "id": "navigation",
           "type": "multi",
-          "text": "Auf welchen Geräten nutzen Sie den Viewer?",
-          "options": ["Befundungsmonitor", "Standard-Desktop / Laptop", "Tablet", "Smartphone"]
+          "text": "Wie sollte die Navigation gestaltet sein?",
+          "options": ["Klassisches Menü am oberen Bildschirmrand", "Seitenleiste (Sidebar)", "Navigationsleiste am unteren Bildschirmrand", "Navigation über Icons", "Keine Präferenz"]
         }
       ]
     },
@@ -155,26 +128,9 @@
       "title": "5. Gesamteindruck",
       "questions": [
         {
-          "id": "gesamtzufriedenheit",
-          "type": "scale",
-          "text": "Wie zufrieden sind Sie insgesamt mit der Benutzeroberfläche?",
-          "required": true,
-          "min": 1, "max": 5,
-          "minLabel": "Sehr unzufrieden",
-          "maxLabel": "Sehr zufrieden"
-        },
-        {
-          "id": "weiterempfehlung",
-          "type": "scale",
-          "text": "Wie wahrscheinlich ist es, dass Sie den Viewer Kolleginnen und Kollegen empfehlen?",
-          "min": 0, "max": 10,
-          "minLabel": "Sehr unwahrscheinlich",
-          "maxLabel": "Sehr wahrscheinlich"
-        },
-        {
-          "id": "wunschfunktion",
+          "id": "datenschutz",
           "type": "text",
-          "text": "Welche Funktion oder Verbesserung wünschen Sie sich am meisten?"
+          "text": "Welche Anforderungen haben Sie an Datenschutz und Datensicherheit?"
         },
         {
           "id": "sonstiges",
