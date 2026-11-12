@@ -32,15 +32,6 @@
       "title": "2. Layout und Navigation",
       "questions": [
         {
-          "id": "uebersichtlichkeit",
-          "type": "scale",
-          "text": "Die Benutzeroberfläche ist insgesamt übersichtlich.",
-          "required": true,
-          "min": 1, "max": 5,
-          "minLabel": "Stimme gar nicht zu",
-          "maxLabel": "Stimme voll zu"
-        },
-        {
           "id": "layout_anpassung",
           "type": "single",
           "text": "Möchten Sie die Benutzeroberfläche individuell anpassen können?",
@@ -125,7 +116,7 @@
     },
     {
       "id": "gesamt",
-      "title": "5. Gesamteindruck",
+      "title": "5. Sontige Fragen",
       "questions": [
         {
           "id": "datenschutz",
